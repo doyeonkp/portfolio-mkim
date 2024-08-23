@@ -12,11 +12,11 @@ import java.time.LocalDate
 @Profile(value = ["default"])
 class DataInitializer(
     private val achievementRepository: AchievementRepository,
+    private val experienceRepository: ExperienceRepository,
     private val introductionRepository: IntroductionRepository,
     private val linkRepository: LinkRepository,
-    private val skillRepository: SkillRepository,
     private val projectRepository: ProjectRepository,
-    private val experienceRepository: ExperienceRepository
+    private val skillRepository: SkillRepository
 ) {
     @PostConstruct
     fun initializeData() {
@@ -85,25 +85,36 @@ class DataInitializer(
         )
         experienceRepository.saveAll(mutableListOf(experience1, experience2))
         // skill 초기화
-        val java = Skill(name = "Java", type = SkillType.LANGUAGE.name, isActive = true)
-        val kotlin = Skill(name = "Kotlin", type = SkillType.LANGUAGE.name, isActive = true)
-        val python = Skill(name = "Python", type = SkillType.LANGUAGE.name, isActive = true)
-        val spring = Skill(name = "Spring", type = SkillType.FRAMEWORK.name, isActive = true)
-        val django = Skill(name = "Django", type = SkillType.FRAMEWORK.name, isActive = true)
-        val mysql = Skill(name = "MySQL", type = SkillType.DATABASE.name, isActive = true)
-        val redis = Skill(name = "Redis", type = SkillType.DATABASE.name, isActive = true)
-        val kafka = Skill(name = "Kafka", type = SkillType.TOOL.name, isActive = true)
-        skillRepository.saveAll(
-            mutableListOf(
-                java,
-                kotlin,
-                spring,
-                django,
-                mysql,
-                redis,
-                kafka
-            )
-        )// project / project_detail / project_skill 초기화 val project1 = Project(
+        val skills = mutableListOf(
+            Skill(name = "Java", type = SkillType.LANGUAGE.name, isActive = true),
+            Skill(name = "Kotlin", type = SkillType.LANGUAGE.name, isActive = true),
+            Skill(name = "Python", type = SkillType.LANGUAGE.name, isActive = true),
+            Skill(name = "Spring", type = SkillType.FRAMEWORK.name, isActive = true),
+            Skill(name = "Django", type = SkillType.FRAMEWORK.name, isActive = true),
+            Skill(name = "MySQL", type = SkillType.DATABASE.name, isActive = true),
+            Skill(name = "Redis", type = SkillType.DATABASE.name, isActive = true),
+            Skill(name = "Kafka", type = SkillType.TOOL.name, isActive = true)
+        )
+        skillRepository.saveAll(skills)
+//        val java = Skill(name = "Java", type = SkillType.LANGUAGE.name, isActive = true)
+//        val kotlin = Skill(name = "Kotlin", type = SkillType.LANGUAGE.name, isActive = true)
+//        val python = Skill(name = "Python", type = SkillType.LANGUAGE.name, isActive = true)
+//        val spring = Skill(name = "Spring", type = SkillType.FRAMEWORK.name, isActive = true)
+//        val django = Skill(name = "Django", type = SkillType.FRAMEWORK.name, isActive = true)
+//        val mysql = Skill(name = "MySQL", type = SkillType.DATABASE.name, isActive = true)
+//        val redis = Skill(name = "Redis", type = SkillType.DATABASE.name, isActive = true)
+//        val kafka = Skill(name = "Kafka", type = SkillType.TOOL.name, isActive = true)
+//        skillRepository.saveAll(
+//            mutableListOf(
+//                java,
+//                kotlin,
+//                spring,
+//                django,
+//                mysql,
+//                redis,
+//                kafka
+//            )
+//        )// project / project_detail / project_skill 초기화 val project1 = Project(
 
         // project / project_detail / project_skill 초기화
         val project1 = Project(
@@ -123,10 +134,14 @@ class DataInitializer(
         )
         project1.skills.addAll(
             mutableListOf(
-                ProjectSkill(project = project1, skill = java),
-                ProjectSkill(project = project1, skill = spring),
-                ProjectSkill(project = project1, skill = mysql),
-                ProjectSkill(project = project1, skill = redis)
+                ProjectSkill(project = project1, skill = skills[0]),  // Java
+                ProjectSkill(project = project1, skill = skills[3]),  // Spring
+                ProjectSkill(project = project1, skill = skills[5]),  // MySQL
+                ProjectSkill(project = project1, skill = skills[6])   // Redis
+//                ProjectSkill(project = project1, skill = java),
+//                ProjectSkill(project = project1, skill = spring),
+//                ProjectSkill(project = project1, skill = mysql),
+//                ProjectSkill(project = project1, skill = redis)
             )
         )
 
@@ -151,9 +166,12 @@ class DataInitializer(
         )
         project2.skills.addAll(
             mutableListOf(
-                ProjectSkill(project = project2, skill = python),
-                ProjectSkill(project = project2, skill = django),
-                ProjectSkill(project = project2, skill = kafka)
+                ProjectSkill(project = project2, skill = skills[2]),  // Python
+                ProjectSkill(project = project2, skill = skills[4]),  // Django
+                ProjectSkill(project = project2, skill = skills[7])   // Kafka
+//                ProjectSkill(project = project2, skill = python),
+//                ProjectSkill(project = project2, skill = django),
+//                ProjectSkill(project = project2, skill = kafka)
             )
         )
         projectRepository.saveAll(mutableListOf(project1, project2))
